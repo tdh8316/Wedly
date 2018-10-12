@@ -52,6 +52,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun startService() {
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
+        }
+    }
+
     private val locationListener = object : LocationListener {
 
         override fun onLocationChanged(location: Location) {
@@ -62,15 +71,6 @@ class MainActivity : AppCompatActivity() {
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
-    }
-
-    private fun startService() {
-        if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
-        }
     }
 
     private fun updateWeather(latitude: Double, longitude: Double) {
