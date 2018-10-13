@@ -30,10 +30,9 @@ interface WeatherAPI {
             : Call<JsonObject>
 
     @GET("forecast?")
-    fun getForecast(
+    fun getForecasts(
             @Query("lat") lat: String,
             @Query("lon") lon: String,
-            @Query("mode") mode: String,
             @Query("APPID") APPID: String)
             : Call<JsonObject>
 }
