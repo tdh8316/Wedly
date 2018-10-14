@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("Restore", "Done")
         }
+
         if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
