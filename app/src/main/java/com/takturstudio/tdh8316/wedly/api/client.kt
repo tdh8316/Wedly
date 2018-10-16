@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 const val OPEN_WEATHER_MAP_KEY = "71594a4e523a6036a46aa2f1bd9f345d"
-const val MIN_CALL_TIME: Long = 3600000 // 300000ms=5m 3600000ms=1h
+const val MIN_CALL_TIME: Long = 300000 // 300000ms=5m 3600000ms=1h
 
 class RetrofitClient {
 
