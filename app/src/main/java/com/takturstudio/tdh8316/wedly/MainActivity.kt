@@ -21,6 +21,7 @@ import com.takturstudio.tdh8316.wedly.api.OPEN_WEATHER_MAP_KEY
 import com.takturstudio.tdh8316.wedly.api.RetrofitClient
 import com.takturstudio.tdh8316.wedly.api.WEATHER_TO_KOREAN
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
 
             val latestWeather = restoreCurrentWeatherFromCache(currentsCache!!)
             updateCurrentWeatherWidgets(latestWeather[0], latestWeather[1], latestWeather[2])
+            updateForecastsWidgets(restoreForecastsFromCache(forecastsCache!!))
 
             image_weather.clearAnimation()
 
@@ -108,9 +110,13 @@ class MainActivity : AppCompatActivity() {
                         Log.e("openweathermap", t.message)
                     }
 
+                    @SuppressLint("SetTextI18n")
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                        val forecasts = JSONObject(response.body().toString()).getJSONArray("list")
                         forecastsCache!!.createNewFile()
-                        forecastsCache!!.writeText(JSONObject(response.body().toString()).toString())
+                        forecastsCache!!.writeText(forecasts.toString())
+
+                        updateForecastsWidgets(forecasts)
                     }
                 })
     }
@@ -126,7 +132,6 @@ class MainActivity : AppCompatActivity() {
                         Log.e("openweathermap", t.message)
                     }
 
-                    @SuppressLint("SetTextI18n")
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         val weather = JSONObject(response.body().toString())
                         currentsCache!!.createNewFile()
@@ -135,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                         updateCurrentWeatherWidgets(
                                 JSONObject(weather.getJSONArray("weather")[0].toString()).getString("main"),
                                 weather.getString("name"),
-                                "${(weather.getJSONObject("main").getDouble("temp") - 273).toInt()}°C")
+                                "${(weather.getJSONObject("main").getDouble("temp")).toInt()}℃")
                         image_weather.clearAnimation()
                     }
                 })
@@ -191,6 +196,48 @@ class MainActivity : AppCompatActivity() {
             }
             else -> {
 
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun updateForecastsWidgets(forecasts: JSONArray) {
+        for (i in 3..9) {
+            // Log.d("forecast", "Temp=${JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")}")
+            /*Log.d("time", JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13))
+            TimeUnit.SECONDS.sleep(1L)
+            Log.d("temp", (JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")-273).toInt().toString())*/
+            val temp = (JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")).toInt()
+            val time = if (JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13).startsWith("0")) {
+                "오전 ${JSONObject(forecasts[i].toString()).getString("dt_txt").substring(12, 13)}시"
+            } else {
+                "오후 ${JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13).toInt() - 12}시".replace("오후 0시", "오후 12시")
+            }
+            when ((i - 3)) {
+                0 -> {
+                    label_temperature_fc0.text = "${temp}℃"
+                    label_time_fc0.text = time
+                }
+                1 -> {
+                    label_temperature_fc1.text = "${temp}℃"
+                    label_time_fc1.text = time
+                }
+                2 -> {
+                    label_temperature_fc2.text = "${temp}℃"
+                    label_time_fc2.text = time
+                }
+                3 -> {
+                    label_temperature_fc3.text = "${temp}℃"
+                    label_time_fc3.text = time
+                }
+                4 -> {
+                    label_temperature_fc4.text = "${temp}℃"
+                    label_time_fc4.text = time
+                }
+                5 -> {
+                    label_temperature_fc5.text = "${temp}℃"
+                    label_time_fc5.text = time
+                }
             }
         }
     }

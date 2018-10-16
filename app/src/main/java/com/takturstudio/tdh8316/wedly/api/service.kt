@@ -20,19 +20,22 @@ interface WeatherAPI {
     fun getCurrentWeather(
             @Query("lat") lat: String,
             @Query("lon") lon: String,
-            @Query("APPID") APPID: String)
+            @Query("APPID") APPID: String,
+            @Query("units") units: String = "metric")
             : Call<JsonObject>
 
     @GET("weather?")
     fun getCurrentWeatherWithoutGPS(
             @Query("q") lat: String,
-            @Query("APPID") APPID: String)
+            @Query("APPID") APPID: String,
+            @Query("units") units: String = "metric")
             : Call<JsonObject>
 
     @GET("forecast?")
     fun getForecasts(
             @Query("lat") lat: String,
             @Query("lon") lon: String,
-            @Query("APPID") APPID: String)
+            @Query("APPID") APPID: String,
+            @Query("units") units: String = "metric")
             : Call<JsonObject>
 }
