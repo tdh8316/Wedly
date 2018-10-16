@@ -24,6 +24,7 @@ interface WeatherAPI {
             @Query("units") units: String = "metric")
             : Call<JsonObject>
 
+    @Suppress("unused")
     @GET("weather?")
     fun getCurrentWeatherWithoutGPS(
             @Query("q") lat: String,
