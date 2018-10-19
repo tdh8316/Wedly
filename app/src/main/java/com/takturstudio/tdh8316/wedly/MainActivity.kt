@@ -116,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                         forecastsCache!!.createNewFile()
                         forecastsCache!!.writeText(forecasts.toString())
 
+                        Log.d("responsed", "forecast: done")
+
                         updateForecastsWidgets(forecasts)
                     }
                 })
@@ -137,10 +139,12 @@ class MainActivity : AppCompatActivity() {
                         currentsCache!!.createNewFile()
                         currentsCache!!.writeText(weather.toString())
 
+                        Log.d("responsed", "weather: done")
+
                         updateCurrentWeatherWidgets(
                                 JSONObject(weather.getJSONArray("weather")[0].toString()).getString("main"),
                                 weather.getString("name"),
-                                "${(weather.getJSONObject("main").getDouble("temp")).toInt()}℃")
+                                "${Math.ceil((weather.getJSONObject("main").getDouble("temp"))).toInt()}℃")
                         image_weather.clearAnimation()
                     }
                 })
@@ -207,35 +211,36 @@ class MainActivity : AppCompatActivity() {
             /*Log.d("time", JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13))
             TimeUnit.SECONDS.sleep(1L)
             Log.d("temp", (JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")-273).toInt().toString())*/
-            val temp = (JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")).toInt()
+            val temperature = Math.ceil(JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")).toInt()
             val time = if (JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13).startsWith("0")) {
                 "오전 ${JSONObject(forecasts[i].toString()).getString("dt_txt").substring(12, 13)}시"
             } else {
-                "오후 ${JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13).toInt() - 12}시".replace("오후 0시", "오후 12시")
+                "오후 ${JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13).toInt() - 12}시".replace(
+                        "오후 0시", "오후 12시")
             }
             when ((i - 3)) {
                 0 -> {
-                    label_temperature_fc0.text = "${temp}℃"
+                    label_temperature_fc0.text = "${temperature}℃"
                     label_time_fc0.text = time
                 }
                 1 -> {
-                    label_temperature_fc1.text = "${temp}℃"
+                    label_temperature_fc1.text = "${temperature}℃"
                     label_time_fc1.text = time
                 }
                 2 -> {
-                    label_temperature_fc2.text = "${temp}℃"
+                    label_temperature_fc2.text = "${temperature}℃"
                     label_time_fc2.text = time
                 }
                 3 -> {
-                    label_temperature_fc3.text = "${temp}℃"
+                    label_temperature_fc3.text = "${temperature}℃"
                     label_time_fc3.text = time
                 }
                 4 -> {
-                    label_temperature_fc4.text = "${temp}℃"
+                    label_temperature_fc4.text = "${temperature}℃"
                     label_time_fc4.text = time
                 }
                 5 -> {
-                    label_temperature_fc5.text = "${temp}℃"
+                    label_temperature_fc5.text = "${temperature}℃"
                     label_time_fc5.text = time
                 }
             }
