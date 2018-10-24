@@ -212,6 +212,7 @@ class MainActivity : AppCompatActivity() {
             TimeUnit.SECONDS.sleep(1L)
             Log.d("temp", (JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")-273).toInt().toString())*/
             val temperature = Math.ceil(JSONObject(forecasts[i].toString()).getJSONObject("main").getDouble("temp")).toInt()
+            val weather = JSONObject(JSONObject(forecasts[i].toString()).getJSONArray("weather")[0].toString()).getString("main")
             val time = if (JSONObject(forecasts[i].toString()).getString("dt_txt").substring(11, 13).startsWith("0")) {
                 "오전 ${JSONObject(forecasts[i].toString()).getString("dt_txt").substring(12, 13)}시"
             } else {
@@ -220,30 +221,40 @@ class MainActivity : AppCompatActivity() {
             }
             when ((i - 3)) {
                 0 -> {
+                    label_weather_fc0.text = weather
                     label_temperature_fc0.text = "${temperature}℃"
                     label_time_fc0.text = time
                 }
                 1 -> {
+                    label_weather_fc1.text = weather
                     label_temperature_fc1.text = "${temperature}℃"
                     label_time_fc1.text = time
                 }
                 2 -> {
+                    label_weather_fc2.text = weather
                     label_temperature_fc2.text = "${temperature}℃"
                     label_time_fc2.text = time
                 }
                 3 -> {
+                    label_weather_fc3.text = weather
                     label_temperature_fc3.text = "${temperature}℃"
                     label_time_fc3.text = time
                 }
                 4 -> {
+                    label_weather_fc4.text = weather
                     label_temperature_fc4.text = "${temperature}℃"
                     label_time_fc4.text = time
                 }
                 5 -> {
+                    label_weather_fc5.text = weather
                     label_temperature_fc5.text = "${temperature}℃"
                     label_time_fc5.text = time
                 }
             }
         }
+    }
+
+    fun maybeRain() {
+
     }
 }
