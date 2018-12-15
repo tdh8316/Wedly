@@ -1,4 +1,4 @@
 # wedly
 A simple weather application.
 
-![screenshot](./screenshot.png)
+![screenshot](./screenshot.jpg)
